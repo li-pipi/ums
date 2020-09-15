@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans.xsd
+							http://www.springframework.org/schema/aop
+							http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<bean id="userLogger" class="cn.ekgc.spring.d0828.aop.log.UserLogger"></bean>
+	<bean id="userDao" class="cn.ekgc.spring.d0828.aop.dao.impl.UserDaoImpl"></bean>
+
+	<!-- 采用 AOP 方式，将功能切入 -->
+	<aop:config>
+		<!-- 设置功能的切入位置，称之为切入点 -->
+		<aop:pointcut id="myPointcut" expression="execution(* cn.ekgc.spring.d0828.aop.dao..*.*(..))"/>
+		<aop:aspect id="myAspect" ref="userLogger">
+			<aop:before method="saveUserBefor" pointcut-ref="myPointcut"/>
+			<aop:after method="saveUserAfter" pointcut-ref="myPointcut"/>
+		</aop:aspect>
+	</aop:config>
+</beans>

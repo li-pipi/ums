@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                                http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+	<!-- 配置 Spring 核心配置文件 applicationContext.xml 路径 [BEGIN] -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:/applicationContext.xml</param-value>
+	</context-param>
+	<!-- 配置 Spring 核心配置文件 applicationContext.xml 路径 [END] -->
+
+	<!-- 配置使用监听器监听 Tomcat 启动，当 Tomcat 启动后加载配置文件启动 Spring 容器 [BEGIN] -->
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	<!-- 配置使用监听器监听 Tomcat 启动，当 Tomcat 启动后加载配置文件启动 Spring 容器 [END] -->
+
+	<!-- 配置 Spring MVC 核心 Servlet [BEGIN] -->
+	<servlet>
+		<servlet-name>springmvc</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<!-- 将 Servlet 创建时间提前到 Tomcat 启动 -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>springmvc</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	<!-- 配置 Spring MVC 核心 Servlet [END] -->
+
+	<!-- 配置编码格式过滤器 [BEGIN] -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.CharacterEncodingFilter
+		</filter-class>
+		<!-- 设定编码格式 -->
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- 配置编码格式过滤器 [END] -->
+</web-app>

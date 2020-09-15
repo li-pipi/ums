@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                                http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+	<!-- 设定 Spring 核心配置文件 applicationContext.xml 文件路径 [BEGIN] -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath*:/applicationContext.xml
+		</param-value>
+	</context-param>
+	<!-- 设定 Spring 核心配置文件 applicationContext.xml 文件路径 [END] -->
+
+	<!-- 通过使用监听器的方式监听 Tomcat 的启动，一旦 Tomcat 启动，则使用配置文件启动 Spring 框架 [BEGIN] -->
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	<!-- 通过使用监听器的方式监听 Tomcat 的启动，一旦 Tomcat 启动，则使用配置文件启动 Spring 框架 [END] -->
+
+	<!-- 通过配置 Servlet 的方式启动 Spring MVC 框架 [BEGIN] -->
+	<servlet>
+		<!--
+			Spring MVC 框架启动时，会去 /WEB-INF/ 下读取配置文件，
+			该配置文件的命名规则是取得当前的 servlet-name 的值，后面添加上 “-servlet.xml”
+		-->
+		<servlet-name>springmvc</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<!-- 需要将 Servlet 的实例化时间变为随着 Tomcat 启动就开始，那么可以通过 load-on-startup -->
+		<!-- load-on-startup：当值 > 0 时，则表示随着 Tomcat 启动就开始实例化，当 <= 0 时，表示请求到来时进行实例化 -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>springmvc</servlet-name>
+		<!-- Spring MVC 应当过滤所有请求 -->
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	<!-- 通过配置 Servlet 的方式启动 Spring MVC 框架 [END] -->
+
+	<!-- 配置编码格式过滤器 [BEGIN] -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.CharacterEncodingFilter
+		</filter-class>
+		<!-- 设定编码格式为 UTF-8 -->
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- 配置编码格式过滤器 [END] -->
+</web-app>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<description>Shiro 核心配置文件</description>
+
+	<!-- 配置 Shiro 核心 Bean SecurityManager -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- 设定如果需要认证，则对应的认证规则是什么，称之为认证域 -->
+		<property name="realm" ref="shiroDBRealm"/>
+	</bean>
+
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- 所使用的 SecurityManager bean -->
+		<property name="securityManager" ref="securityManager"/>
+		<!-- 如果需要认证，那么认证页面的路径 URL -->
+		<property name="loginUrl" value="/user/login"/>
+		<!-- 当认证前没有明确的请求 URL ，则认证成功后的默认重定向地址 -->
+		<property name="successUrl" value="/index"/>
+		<!-- 配置对于 URL 的认证规则，认证规则从上到下进行依次匹配 -->
+		<property name="filterChainDefinitions">
+			<value>
+				<!-- 对于静态资源不需要认证 -->
+				/static/** = anon
+				<!-- 对于退出操作，也有对应的内置规则 -->
+				/user/logout = logout
+				<!-- 除此之外，如果都需要认证，则使用 authc -->
+				/** = authc
+			</value>
+		</property>
+	</bean>
+
+	<bean id="lifecycleBean" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+</beans>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- 如果需要 Spring 管理相应的对象，只需要将对应的类在 Spring 的配置文件中进行注册即可 -->
+	<!-- 凡是在 Spring 中注册的类，当 Spring 容器启动时，就会将这些类进行对象的创建，也就是 new 对应的对象 -->
+	<!-- Spring 默认情况下会为每个类都创建一个唯一的 id，规则是将该类的类名首字母小写作为 id -->
+	<bean id="girlFriend" class="cn.ekgc.spring.d0828.GirlFriend"></bean>
+</beans>

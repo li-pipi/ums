@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ekgc.ssm.dao.UserDao">
+	<select id="findUserList" resultMap="userMap">
+		select
+			id,
+			name,
+			cellphone
+		from
+			sys_user
+	</select>
+
+	<insert id="saveUser" parameterType="User">
+		insert into sys_user(name, cellphone) values(#{name}, #{cellphone})
+	</insert>
+
+	<resultMap id="userMap" type="User">
+		<id property="id" javaType="java.lang.Long" column="id"/>
+		<result property="name" javaType="java.lang.String" column="name"/>
+		<result property="cellphone" javaType="java.lang.String" column="cellphone"/>
+	</resultMap>
+</mapper>

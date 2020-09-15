@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ekgc.ironman.dao.MenuDao">
+	<select id="findMenuListForIndex" parameterType="java.util.Map" resultMap="resultMap">
+		select
+		m.id,
+		m.pId,
+		m.text,
+		m.url,
+		m.icon,
+		m.status,
+		m.createTime,
+		m.updateTime
+		from
+		sys_menu m left join sys_menu pm on m.pid=pm.id
+		join sys_role_menu rm on m.id=rm.menu_id
+		<where>
+			<trim suffixOverrides="and">
+				<if test="roleId != null">rm.role_id=#{roleId} and </if>
+				<if test="pId != null">m.pId=#{pId} and </if>
+				<if test="status != null">m.status=#{status} and </if>
+			</trim>
+		</where>
+		order by m.id asc
+	</select>
+
+	<select id="findMenuListByQuery" resultMap="resultMap">
+		select
+		m.id,
+		m.pId,
+		m.text,
+		m.url,
+		m.icon,
+		m.status,
+		m.createTime,
+		m.updateTime
+		from
+		sys_menu m left join sys_menu pm on m.pid=pm.id
+	</select>
+	<resultMap id="resultMap" type="Menu">
+		<id property="id" javaType="java.lang.Long" column="id"/>
+		<result property="text" javaType="java.lang.String" column="text"/>
+		<result property="url" javaType="java.lang.String" column="url"/>
+		<result property="icon" javaType="java.lang.String" column="icon"/>
+		<result property="status" javaType="java.lang.Integer" column="status"/>
+		<result property="createTime" javaType="java.util.Date" column="createTime"/>
+		<result property="updateTime" javaType="java.util.Date" column="updateTime"/>
+		<association property="parent" javaType="Menu">
+			<id property="id" javaType="java.lang.Long" column="pId"/>
+		</association>
+	</resultMap>
+</mapper>

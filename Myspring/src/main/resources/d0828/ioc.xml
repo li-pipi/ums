@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- 将需要 Spring 创建对象类进行注册 -->
+	<bean id="userDaoOracle" class="cn.ekgc.spring.d0828.ioc.dao.impl.UserDaoOracleImpl"></bean>
+	<bean id="userDaoMySQL" class="cn.ekgc.spring.d0828.ioc.dao.impl.UserDaoMySQLImpl"></bean>
+	<bean id="userService" class="cn.ekgc.spring.d0828.ioc.service.impl.UserServiceImpl">
+		<!-- 当 Spring 创建完成该对象之后，需要通知 Spring 将对应属性 userDao 进行赋值，也就是依赖注入 -->
+		<property name="userDao" ref="userDaoMySQL"/>
+	</bean>
+
+	<bean id="user" class="cn.ekgc.spring.d0828.ioc.User">
+		<!--		&lt;!&ndash; ref 的值指的是某个 bean 的 id，而 value 指的是具体的值，其类型可以使基本数据类型、String &ndash;&gt;-->
+		<!--		<property name="name" value="王博"/>-->
+		<!--		<property name="age" value="26"/>-->
+		<!--		&lt;!&ndash; 依赖注入的属性为 List &ndash;&gt;-->
+		<!--		<property name="cityList">-->
+		<!--			<list>-->
+		<!--				<value>西安</value>-->
+		<!--				<value>渭南</value>-->
+		<!--				<value>咸阳</value>-->
+		<!--				<value>宝鸡</value>-->
+		<!--			</list>-->
+		<!--		</property>-->
+		<!--		<property name="nameMap">-->
+		<!--			<map>-->
+		<!--				<entry key="wangbo" value="王博"/>-->
+		<!--				<entry key="wangrenhao" value="王仁豪"/>-->
+		<!--				<entry key="wangke" value="王柯"/>-->
+		<!--			</map>-->
+		<!--		</property>-->
+		<!-- 在 Spring 创建对象时，可以指明所使用的构造方法 -->
+		<constructor-arg index="0" value="王仁豪"/>
+		<constructor-arg index="1" value="23"/>
+	</bean>
+</beans>

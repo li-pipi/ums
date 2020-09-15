@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans.xsd
+							http://www.springframework.org/schema/context
+							http://www.springframework.org/schema/context/spring-context.xsd
+							http://www.springframework.org/schema/tx
+							http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<!-- 配置 jdbc.properties 文件所在路径 [BEGIN] -->
+	<context:property-placeholder location="classpath*:/jdbc.properties"/>
+	<!-- 配置 jdbc.properties 文件所在路径 [END] -->
+
+	<!-- 配置注解扫描基础包位置 [BEGIN] -->
+	<context:component-scan base-package="cn.ekgc.ssm">
+		<!-- 对于控制层的注解，只有 Spring MVC 能够处理，所以不能扫描到 -->
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+	</context:component-scan>
+	<!-- 配置注解扫描基础包位置 [END] -->
+
+	<!-- 配置数据源 DataSource 信息 [BEGIN] -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<!-- 通过依赖注入的方式，向该对象的属性传递 JDBC 的四个基本信息 -->
+		<property name="driverClassName" value="${jdbc.driver}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+		<!-- Druid 在连接数据库时，提供了相关的连接信息 -->
+		<!-- 数据库连接池保留的最少连接数 -->
+		<property name="minIdle" value="${druid.minIdle}"/>
+		<!-- 数据库连接池最大连接数据量 -->
+		<property name="maxActive" value="${druid.maxActive}"/>
+		<!-- 连接启动初始链接数量 -->
+		<property name="initialSize" value="${druid.initialSize}"/>
+		<!-- 设定连接空闲最小时间 -->
+		<property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}"/>
+		<!-- 设定连接空闲最大时间 -->
+		<property name="maxEvictableIdleTimeMillis" value="${druid.maxEvictableIdleTimeMillis}"/>
+	</bean>
+	<!-- 配置数据源 DataSource 信息 [END] -->
+
+	<!-- 配置 SqlSessionFactoryBean 信息 [BEGIN] -->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 依赖注入 DataSource 信息 -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 设定 映射文件 mapper 的位置 -->
+		<property name="mapperLocations" value="classpath*:/mapper/*.Mapper.xml"/>
+		<!-- 配置数据类型别名 -->
+		<property name="typeAliasesPackage" value="cn.ekgc.ssm.pojo.entity"/>
+	</bean>
+	<!-- 配置 SqlSessionFactoryBean 信息 [END] -->
+
+	<!-- 配置数据持久层接口信息 [BEGIN] -->
+	<bean id="scannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 配置 SqlSessionFactory 信息 -->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryBean"/>
+		<!-- 设置接口位置 -->
+		<property name="basePackage" value="cn.ekgc.ssm.dao"/>
+	</bean>
+	<!-- 配置数据持久层接口信息 [END] -->
+
+	<!-- 配置使用 Spring 所提供的事务处理机制 [BEGIN] -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 依赖注入 DataSource 信息 -->
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!-- 配置使用 Spring 所提供的事务处理机制 [END] -->
+
+	<!-- 采用注解的形式将事务处理切入到业务层 [BEGIN] -->
+	<!-- 由于 Spring 的注解只能够添加在实现类上，而 Spring 的 AOP 默认采用 JDK 代理必须作用在接口上，因此需要将代理模式切换为 CGLIB -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+	<!-- 采用注解的形式将事务处理切入到业务层 [END] -->
+</beans>

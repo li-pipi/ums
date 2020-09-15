@@ -1,0 +1,3 @@
+1、Spring 结合 MyBatis 的核心要点是将 MyBatis 框架交给 Spring 进行管理。
+2、Spring 要想管理 MyBatis 框架，其本质是，MyBatis 所用到的对象，必须由 Spring 来进行创建。
+3、因此要想完成 Spring 和 MyBatis 结合，则必须用到 MyBatis 所提供的结合 Jar。

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+ 			xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+								 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+  			id="WebApp_ID" version="3.1">
+	<!-- 配置用户模块 Servlet [BEGIN]-->
+	<servlet>
+		<servlet-name>userServlet</servlet-name>
+		<servlet-class>
+			cn.ekgc.publish.controller.UserController
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>userServlet</servlet-name>
+		<url-pattern>/user/*</url-pattern>
+	</servlet-mapping>
+		<!-- 配置用户模块Servlet [END] -->
+		
+		<!-- 配置首页面模块 Servlet [BEGIN] -->
+ 		<servlet>
+			<servlet-name>indexServlet</servlet-name>
+			<servlet-class>
+				cn.ekgc.publish.controller.IndexController
+			</servlet-class>
+		</servlet>
+ 		<servlet-mapping>
+			<servlet-name>indexServlet</servlet-name>
+			<url-pattern>/index</url-pattern>
+		</servlet-mapping>
+			<!-- 配置首页面模块 Servlet [END] -->
+			<!-- 配置消息类别模块 Servlet [BEGIN] -->
+		<servlet>
+			<servlet-name>categoryServlet</servlet-name>
+			<servlet-class>cn.ekgc.publish.controller.CategoryController </servlet-class>
+		</servlet>
+		<servlet-mapping>
+		<servlet-name>categoryServlet</servlet-name>
+		<url-pattern>/category/*</url-pattern>
+		</servlet-mapping>
+		<!-- 配置消息类别模块 Servlet [END] -->
+		<!-- 配置消息模块 Servlet [BEGIN] -->
+				<servlet>
+					<servlet-name>infoServlet</servlet-name>
+					<servlet-class>
+						cn.ekgc.publish.controller.InfoController
+					</servlet-class>
+				</servlet>
+				<servlet-mapping>
+					<servlet-name>infoServlet</servlet-name>
+					<url-pattern>/info/*</url-pattern>
+				</servlet-mapping>
+			<!-- 配置消息模块Servlet[END] -->
+			
+			<!-- 配置文件模块 Servlet [BEGIN] -->
+				<servlet>
+					<servlet-name>fileServlet</servlet-name>
+					<servlet-class>
+						cn.ekgc.publish.controller.FileController
+					</servlet-class>
+				</servlet>
+				<servlet-mapping>
+					<servlet-name>fileServlet</servlet-name>
+					<url-pattern>/file/*</url-pattern>
+				</servlet-mapping>
+			<!-- 配置文件模块Servlet[END] -->
+			
+			<!-- 配置字符编码过滤器 [BEGIN] -->
+		<filter>
+			<filter-name>characterEncodingFilter</filter-name>
+			<filter-class>
+				cn.ekgc.publish.util.filter.CharacterEncodingFilter
+			</filter-class>
+			<!-- 设置编码格式 -->
+			<init-param>
+				<param-name>encoding</param-name>
+				<param-value>UTF-8</param-value>
+			</init-param>
+		</filter>
+		<filter-mapping>
+			<filter-name>characterEncodingFilter</filter-name>
+			<!-- 如果需要过滤器过滤所有请求，则使用通配符/* -->
+			<url-pattern>/*</url-pattern>
+		</filter-mapping>
+		<!-- 配置字符编码过滤器[END] -->
+		
+		<!-- 配置URI 截取过滤器[BEGIN]-->
+		<filter>
+			<filter-name>requestURISubFilter</filter-name>
+			<filter-class>
+				cn.ekgc.publish.util.filter.RequestURISubFilter
+			</filter-class>
+		</filter>
+		<filter-mapping>
+			<filter-name>requestURISubFilter</filter-name>
+			<!-- 如果需要过滤器过滤所有请求，则使用通配符/* -->
+			<url-pattern>/*</url-pattern>
+		</filter-mapping>
+		<!-- 配置URI 截取过滤器[END] -->
+		
+		<!-- 配置安全认证过滤器[BEGIN] -->
+		<filter>
+			<filter-name>securityFilter</filter-name>
+			<filter-class>
+				cn.ekgc.publish.util.filter.SecurityFilter
+			</filter-class>
+			
+		</filter>
+		<filter-mapping>
+			<filter-name>securityFilter</filter-name>
+			<url-pattern>/*</url-pattern>
+		</filter-mapping>
+		<!-- 配置安全认证过滤器[END] -->
+		
+	  	<welcome-file-list>
+   			<welcome-file>index.jsp</welcome-file>
+		</welcome-file-list>
+</web-app>
